@@ -1,0 +1,40 @@
+{
+    "name": "ZEVENT",
+    "description": "ZEVENT est une extension qui affiche les streamers du zevent et leurs informations.",
+    "version": "2025.04",
+    "author": "VooDoo",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": [
+        "https://*.zevent.fr/*",
+        "https://*.the-coven.fr/api/zevent/*",
+        "https://api.the-coven.fr/zevent/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "/assets/images/zevent16.png",
+            "32": "/assets/images/zevent32.png",
+            "48": "/assets/images/zevent48.png",
+            "128": "/assets/images/zevent128.png"
+        }
+    },
+    "icons": {
+        "16": "/assets/images/zevent16.png",
+        "32": "/assets/images/zevent32.png",
+        "48": "/assets/images/zevent48.png",
+        "128": "/assets/images/zevent128.png"
+    },
+    "permissions": [
+        "notifications",
+        "alarms",
+        "storage"
+    ],
+    "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false
+    }
+}

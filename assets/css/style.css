@@ -8,7 +8,7 @@
 }
 
 html {
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 body {
@@ -532,7 +532,7 @@ footer .copy a:hover{
     cursor: pointer;
 }
 
-.modal-body {
+#goalModal .modal-body {
     padding: 0;
 }
 

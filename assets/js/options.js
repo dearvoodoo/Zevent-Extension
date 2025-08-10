@@ -21,4 +21,49 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Options sauvegardées !');
         });
     });
+
+    function loadFavorites() {
+        browser.storage.local.get(["favorites", "notifications"], function (data) {
+            let favorites = data.favorites || [];
+            let notifications = data.notifications || {};
+            let container = document.getElementById("favorites-list");
+            container.innerHTML = "";
+
+            favorites.forEach(streamer => {
+                let div = document.createElement("div");
+                div.classList.add('option-fav-card')
+                div.innerHTML = `
+                    <h3>${streamer}</h3>
+                    <label>
+                        <input type="checkbox" class="notif-live" data-streamer="${streamer}" ${notifications[streamer]?.live !== false ? "checked" : ""}>
+                        Notification Live
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" class="notif-goal" data-streamer="${streamer}" ${notifications[streamer]?.goal !== false ? "checked" : ""}>
+                        Notification Goal
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+        });
+    }
+
+    document.getElementById("favorites-list").addEventListener("change", function (event) {
+        let target = event.target;
+        if (target.classList.contains("notif-live") || target.classList.contains("notif-goal")) {
+            let streamer = target.dataset.streamer;
+            let type = target.classList.contains("notif-live") ? "live" : "goal";
+            let checked = target.checked;
+
+            browser.storage.local.get("notifications", function (data) {
+                let notifications = data.notifications || {};
+                if (!notifications[streamer]) notifications[streamer] = {};
+                notifications[streamer][type] = checked;
+                browser.storage.local.set({ "notifications": notifications });
+            });
+        }
+    });
+
+    loadFavorites();
 });
