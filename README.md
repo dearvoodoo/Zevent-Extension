@@ -13,7 +13,7 @@ Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des no
 - 🌐 Interface simple et rapide, avec préférences enregistrées.
 
 ## 📸 Aperçu
-[Preview](https://the-coven.fr/wp-content/uploads/2025/08/promo_social_3.png)
+![Preview](https://the-coven.fr/wp-content/uploads/2025/08/promo_social_3.png)
 
 ## 📦 Installation
 
