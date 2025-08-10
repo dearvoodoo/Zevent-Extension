@@ -27,7 +27,7 @@ Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des no
 ## 📦 Installation
 
 ### Chrome, Edge et Opera
-1. Télécharge la dernière version `.zip` depuis l’onglet **Releases** → **Assets** de ce dépôt.
+1. Télécharge la dernière version `.zip` depuis l’onglet **Releases** → **Assets** de ce dépôt. [Dernière version](https://github.com/dearvoodoo/Zevent-Extension/releases/latest)
 2. Décompresse le fichier.
 3. Ouvre la page des extensions :
    - **Chrome / Edge** : `chrome://extensions/`
@@ -37,7 +37,7 @@ Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des no
 6. Sélectionne le dossier décompressé.
 
 ### Firefox
-1. Télécharge la dernière version `.zip` depuis l’onglet **Releases** → **Assets** de ce dépôt.
+1. Télécharge la dernière version `.zip` depuis l’onglet **Releases** → **Assets** de ce dépôt. [Dernière version](https://github.com/dearvoodoo/Zevent-Extension/releases/latest)
 2. Ouvre Firefox et va sur `about:debugging#/runtime/this-firefox`.
 3. Clique sur **Charger un module complémentaire temporaire**.
 4. Sélectionne le fichier `manifest.json` dans le dossier décompressé.
