@@ -2,6 +2,8 @@
 
 Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des notifications lorsqu’ils passent en live, atteignent un objectif ou franchissent un palier de dons.
 
+
+
 ## 🚀 Fonctionnalités
 - 🔔 Notifications en temps réel pour :
   - Les streamers favoris qui passent en live.
@@ -11,6 +13,13 @@ Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des no
 - ⚙️ Options personnalisées par streamer pour activer/désactiver les notifications.
 - ⏱️ Vérification automatique via l’API ZEvent.
 - 🌐 Interface simple et rapide, avec préférences enregistrées.
+
+## 🔗 Liens
+
+[![Page de l'extension](https://img.shields.io/badge/Site-Extension_ZEvent-red?logo=internet-explorer&logoColor=white)](https://the-coven.fr/zevent/extension/)  
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/adkeppkncbhchimiompggjdffikbnhen?label=Chrome&logo=google-chrome&logoColor=white)](https://bit.ly/Chrome-Zevent-Extension)  
+[![Firefox Add-on](https://img.shields.io/amo/v/zevent@the-coven.fr?label=Firefox&logo=firefox-browser&logoColor=white)](https://bit.ly/Firefox-Zevent-Extension)
+
 
 ## 📸 Aperçu
 ![Preview](https://the-coven.fr/wp-content/uploads/2025/08/promo_social_3.png)
