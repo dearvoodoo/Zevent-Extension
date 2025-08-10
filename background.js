@@ -6,7 +6,7 @@ if (typeof browser === "undefined") {
 const ZEVENT_API_URL = "https://api.the-coven.fr/zevent";
 const NOTIFICATIONS_API_URL = "https://api.the-coven.fr/zevent/notifications";
 const CHECK_INTERVAL = 30000; // 30 secondes
-const API_KEY = "TON_API_KEY_THE_COVEN";
+const API_KEY = "TON_API_KEY_THE_COVEN"; // STP utilise la tienne via https://api.the-coven.fr/
 
 browser.runtime.onInstalled.addListener(() => {
     console.log('Extension ZEvent lancée. Version:', browser.runtime.getManifest().version);
@@ -160,3 +160,4 @@ browser.alarms.onAlarm.addListener(alarm => {
 // Première vérification au lancement
 
 checkAllNotifications();
+
