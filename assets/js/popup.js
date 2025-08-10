@@ -12,7 +12,7 @@ function callCovenAPI(endpoint, callback, options = {}) {
     const apiUrl = 'https://api.the-coven.fr/' + endpoint;
     const defaultOptions = {
         headers: {
-            'X-API-Key': 'df0a0ca75db1f605d250bfed7ac2544c',
+            'X-API-Key': 'TON_API_KEY_THE_COVEN // STP utilise la tienne via https://api.the-coven.fr/',
             'Content-Type': 'application/json'
         }
     };
@@ -661,4 +661,5 @@ $(".tri-state-toggle-button.loc, .tri-state-toggle-button.online").on("click", f
 });
 
 $("#toggle-favorites").on("click", saveFiltersAndUpdate);
+
 $("#searchBar").on("keyup input", saveFiltersAndUpdate);
