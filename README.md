@@ -1,4 +1,25 @@
 # Extension Navigateur ZEvent
+<!-- Status & Version -->
+![Status](https://img.shields.io/badge/Status-Up-brightgreen?style=for-the-badge)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/dearvoodoo/Zevent-Extension?label=Version&style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dearvoodoo/Zevent-Extension?label=Latest%20Release&color=blue&style=for-the-badge)
+![GitHub Release Date](https://img.shields.io/github/release-date/dearvoodoo/Zevent-Extension?style=for-the-badge)
+[![License: Custom](https://img.shields.io/badge/License-Custom-black?style=for-the-badge&logo=github)](https://github.com/dearvoodoo/Zevent-Extension/blob/main/LICENSE)
+![Languages](https://img.shields.io/github/languages/top/dearvoodoo/Zevent-Extension?style=for-the-badge)
+
+<!-- Contact & WakaTime -->
+[![Contact Me](https://img.shields.io/badge/Discord-Contact%20Me-5865F2?logo=discord&logoColor=white&style=for-the-badge)]([https://discord.gg/tonlien](https://the-coven.fr/redirect/discord))
+
+<!-- Repo stats -->
+![Total Patches](https://img.shields.io/badge/Total%20Patches-14-orange?style=for-the-badge)
+![Lines of code](https://img.shields.io/badge/lines%20of%20code-4.9k-blue?style=for-the-badge)
+![Repo size](https://img.shields.io/github/repo-size/dearvoodoo/Zevent-Extension?style=for-the-badge)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=dearvoodoo.Zevent-Extension?style=for-the-badge)
+![Downloads](https://img.shields.io/github/downloads/dearvoodoo/Zevent-Extension/total?color=brightgreen&style=for-the-badge)
+
+
+---
+
 
 Une extension pour suivre en direct les streamers du **ZEvent**, recevoir des notifications lorsqu’ils passent en live, atteignent un objectif ou franchissent un palier de dons.
 
