@@ -1,6 +1,5 @@
 # Extension Navigateur ZEvent
 <!-- Status & Version -->
-![Status](https://img.shields.io/badge/Status-Up-brightgreen?style=for-the-badge)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/dearvoodoo/Zevent-Extension?label=Version&style=for-the-badge)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dearvoodoo/Zevent-Extension?label=Latest%20Release&color=blue&style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/dearvoodoo/Zevent-Extension?style=for-the-badge)
@@ -17,6 +16,8 @@
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=dearvoodoo.Zevent-Extension?style=for-the-badge)
 ![Downloads](https://img.shields.io/github/downloads/dearvoodoo/Zevent-Extension/total?color=brightgreen&style=for-the-badge)
 
+<!-- Status UP stats -->
+API : [![Better Stack Badge](https://uptime.betterstack.com/status-badges/v3/monitor/1tbp0.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
 
 ---
 
