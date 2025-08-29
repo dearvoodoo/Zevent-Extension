@@ -1,7 +1,7 @@
 {
     "name": "ZEVENT",
     "description": "ZEVENT est une extension qui affiche les streamers du zevent et leurs informations.",
-    "version": "2.4",
+    "version": "2.5",
     "author": "VooDoo",
     "manifest_version": 2,
     "background": {
@@ -35,3 +35,4 @@
         "page": "options.html"
     }
 }
+
