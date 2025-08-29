@@ -2,8 +2,8 @@ if (typeof browser === "undefined") {
     var browser = chrome;
 }
 
-// Define moment.js language
 moment.locale('fr');
+
 // Launching date
 var end_date = "2025-09-07T23:59:59"
 
@@ -12,7 +12,7 @@ function callCovenAPI(endpoint, callback, options = {}) {
     const apiUrl = 'https://api.the-coven.fr/' + endpoint;
     const defaultOptions = {
         headers: {
-            'X-API-Key': 'TON_API_KEY_THE_COVEN // STP utilise la tienne via https://api.the-coven.fr/',
+            'X-API-Key': 'df0a0ca75db1f605d250bfed7ac2544c',
             'Content-Type': 'application/json'
         }
     };
@@ -35,7 +35,7 @@ function callCovenAPI(endpoint, callback, options = {}) {
 setTimeout(function() {
     callCovenAPI('zevent', function(data) {
         const isLive = data?.Response?.local?.is_live;
-        
+
         if (isLive) {
             setStreamers();
             loadFavorites();
@@ -104,6 +104,37 @@ $(document).ready(function(){
     $('#searchBar').keyup(delay(function() {
         updateStreamers();
     }, 1500))
+
+    const $searchBar = $('#searchBar');
+    
+    setTimeout(() => {
+        $searchBar[0].focus();
+        $searchBar.addClass('no-caret');
+    }, 10);
+
+    $(document).on('keydown', function(event) {
+        // Si l'utilisateur tape déjà dans la search bar, on retire no-caret
+        if (event.target === $searchBar[0]) {
+            $searchBar.removeClass('no-caret');
+            return;
+        }
+        
+        if (event.metaKey || event.ctrlKey) return;
+        if (event.key.length > 1 && ![' ', 'Backspace', 'Delete'].includes(event.key)) return;
+
+        $searchBar.removeClass('no-caret');
+        $searchBar[0].focus();
+
+        const rect = $searchBar[0].getBoundingClientRect();
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            $searchBar[0].scrollIntoView({ behavior: 'instant', block: 'center' });
+        }
+    });
+
+    // Ajouter aussi un événement focus pour être sûr
+    $searchBar.on('focus', function() {
+        $searchBar.removeClass('no-caret');
+    });
 });
 
 // Update streamer with filter
@@ -220,6 +251,44 @@ $(document).on('click', ".info-btn", function(event){
                 $(".btn-streamer#tip").attr("href", live.donationUrl).show()
                 $(".btn-streamer#clips").attr("data-id", live.twitch_id).show()
                 $(".btn-streamer#goals").attr("data-id", live.twitch_id).show()
+                if (live.donation_goals) {
+                    const donationAmount = live.donationAmount.number;
+                    let currentGoal = null;
+
+                    for (const goal of live.donation_goals) {
+                        if (donationAmount < goal.amount) {
+                            currentGoal = goal;
+                            break;
+                        }
+                    }
+
+                    if (!currentGoal) {
+                        currentGoal = live.donation_goals[live.donation_goals.length - 1];
+                    }
+
+                    const $goalName = currentGoal.name;
+                    const $goalAmount = currentGoal.amount.toLocaleString('fr-FR') + ' €';
+                    const currentAmountFormatted = donationAmount.toLocaleString('fr-FR') + ' €';
+
+                    const progressPercentage = Math.min((donationAmount / currentGoal.amount) * 100, 100);
+
+                    $("#actual-goal").html(`
+                        <ul class="goal-list">
+                            <li class="goal-item progress-goal">
+                                <div class="goal-name">
+                                    <p>${$goalName}</p>
+                                </div>
+                                <div class="goal-details">
+                                    <span class="current-amount">${currentAmountFormatted}</span>
+                                    <span class="goal-target"> / ${$goalAmount}</span>
+                                </div>
+                                <div class="goal-progress">
+                                    <div class="progress-bar" style="width: ${progressPercentage}%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    `);
+                }
             }
         })
     })
@@ -337,213 +406,156 @@ $(document).on('click', ".zplace-btn", function(event){
 //$(".zplace-img").attr("src", "https://zevent.fr/assets/zplace-pJSvFGpY.png")
 
 
-// generate clips on page load
-//$(window).on('load', function() {
-//    $(".clip-list-here").html(" ")
-//    $.getJSON("https://clips.zevent.fr/api/clips?page=1&sort_by=view_count", function(data){
-//        $.each(data.items, function(c, clip){
-//            var clip_link = clip.url;
-//            var thumbnail = clip.thumbnail_url;
-//            var cover = clip.broadcaster.profile_image_url;
-//            var title = clip.title;
-//            var streamer_name = clip.broadcaster.display_name;
-//            var game = clip.game.name;
-//            var views = clip.view_count;
-//            var date = clip.created_at;
-//            var clip_html = `
-//                <div class="col list-clip">
-//                    <a class="card mb-3" href="${clip_link}" target="_blank">
-//                        <div class="p-2">
-//                            <img src="${thumbnail}" class="rounded" width="100%">
-//                        </div>
-//                        <div class="card-body">
-//                            <div class="d-flex pb-3" style="gap: 1rem !important;">
-//                                <img src="${cover}" class="rounded" style="width: 2.5rem; height: 2.5rem;">
-//                                <div class="text-start">
-//                                    <p class="text-start line-clamp-2 fs-6 mb-1">${title}</p>
-//                                    <div class="d-inline-flex gap-2 align-items-center">
-//                                        <p class="fs-7 fw-semibold">${streamer_name}</p>
-//                                        <span class="fs-8 fw-light">${game}</span>
-//                                    </div>
-//                                </div>
-//                            </div>
-//                        </div>
-//                        <div class="card-footer d-flex justify-content-between">
-//                            <div id="vues" class="fs-7">
-//                                <i class="fa-light fa-eye mr-1"></i> ${views} vues
-//                            </div>
-//                            <div id="date" class="fs-7">
-//                                <i class="fa-light fa-calendar mr-1"></i> ${moment(date).format("DD/MM/YYYY")}
-//                            </div>
-//                        </div>
-//                    </a>
-//                </div>
-//            `
-//            $(".clip-list-here").append(clip_html)
-//        })
-//    })
-//})
+// Clips 2.0 [BETA CODE - Using old api info]
 
-//$(document).on('click', "#btnradio1", function(event){
-//    $(".clip-list-here").html(" ")
-//    $.getJSON("https://clips.zevent.fr/api/clips?page=1&sort_by=view_count", function(data){
-//        $.each(data.items, function(c, clip){
-//            var clip_link = clip.url;
-//            var thumbnail = clip.thumbnail_url;
-//            var cover = clip.broadcaster.profile_image_url;
-//            var title = clip.title;
-//            var streamer_name = clip.broadcaster.display_name;
-//            var game = clip.game.name;
-//            var views = clip.view_count;
-//            var date = clip.created_at;
-//            var clip_html = `
-//                <div class="col list-clip">
-//                    <a class="card mb-3" href="${clip_link}" target="_blank">
-//                        <div class="p-2">
-//                            <img src="${thumbnail}" class="rounded"  width="100%">
-//                        </div>
-//                        <div class="card-body">
-//                            <div class="d-flex pb-3" style="gap: 1rem !important;">
-//                                <img src="${cover}" class="rounded" style="width: 2.5rem; height: 2.5rem;">
-//                                <div class="text-start">
-//                                    <p class="text-start line-clamp-2 fs-6 mb-1">${title}</p>
-//                                    <div class="d-inline-flex gap-2 align-items-center">
-//                                        <p class="fs-7 fw-semibold">${streamer_name}</p>
-//                                        <span class="fs-8 fw-light">${game}</span>
-//                                    </div>
-//                                </div>
-//                            </div>
-//                        </div>
-//                        <div class="card-footer d-flex justify-content-between">
-//                            <div id="vues" class="fs-7">
-//                                <i class="fa-light fa-eye mr-1"></i> ${views} vues
-//                            </div>
-//                            <div id="date" class="fs-7">
-//                                <i class="fa-light fa-calendar mr-1"></i> ${moment(date).format("DD/MM/YYYY")}
-//                            </div>
-//                        </div>
-//                    </a>
-//                </div>
-//            `
-//            $(".clip-list-here").append(clip_html)
-//        })
-//    })
-//})
+const CLIPS_API_BASE = "https://clips.zevent.fr/api/clips";
+const DEFAULT_PAGE = 1;
 
-//$(document).on('click', "#btnradio2", function(event){
-//    $(".clip-list-here").html("")
-//    $.getJSON("https://clips.zevent.fr/api/clips?page=1&sort_by=created_at", function(data){
-//        $.each(data.items, function(c, clip){
-//            var clip_link = clip.url;
-//            var thumbnail = clip.thumbnail_url;
-//            var cover = clip.broadcaster.profile_image_url;
-//            var title = clip.title;
-//            var streamer_name = clip.broadcaster.display_name;
-//            var game = clip.game.name;
-//            var views = clip.view_count;
-//            var date = clip.created_at;
-//            var clip_html = `
-//                <div class="col list-clip">
-//                    <a class="card mb-3" href="${clip_link}" target="_blank">
-//                        <div class="p-2">
-//                            <img src="${thumbnail}" class="rounded"  width="100%">
-//                        </div>
-//                        <div class="card-body">
-//                            <div class="d-flex pb-3" style="gap: 1rem !important;">
-//                                <img src="${cover}" class="rounded" style="width: 2.5rem; height: 2.5rem;">
-//                                <div class="text-start">
-//                                    <p class="text-start line-clamp-2 fs-6 mb-1">${title}</p>
-//                                    <div class="d-inline-flex gap-2 align-items-center">
-//                                        <p class="fs-7 fw-semibold">${streamer_name}</p>
-//                                        <span class="fs-8 fw-light">${game}</span>
-//                                    </div>
-//                                </div>
-//                            </div>
-//                        </div>
-//                        <div class="card-footer d-flex justify-content-between">
-//                            <div id="vues" class="fs-7">
-//                                <i class="fa-light fa-eye mr-1"></i> ${views} vues
-//                            </div>
-//                            <div id="date" class="fs-7">
-//                                <i class="fa-light fa-calendar mr-1"></i> ${moment(date).format("DD/MM/YYYY")}
-//                            </div>
-//                        </div>
-//                    </a>
-//                </div>
-//            `
-//            $(".clip-list-here").append(clip_html)
-//        })
-//    })
-//})
+function formatClipDate(dateString) {
+    return moment(dateString).format("DD/MM/YYYY");
+}
+
+// Create clip HTML
+function generateClipHTML(clip) {
+    const {
+        url: clip_link,
+        thumbnail_url: thumbnail,
+        broadcaster,
+        title,
+        game,
+        view_count: views,
+        created_at: date
+    } = clip;
+
+    return `
+        <div class="col list-clip">
+            <a class="card mb-3" href="${clip_link}" target="_blank">
+                <div class="p-2">
+                    <img src="${thumbnail}" class="rounded" width="100%" alt="Clip: ${title}">
+                </div>
+                <div class="card-body">
+                    <div class="d-flex pb-3" style="gap: 1rem !important;">
+                        <img src="${broadcaster.profile_image_url}" class="rounded" style="width: 2.5rem; height: 2.5rem;" alt="${broadcaster.display_name}">
+                        <div class="text-start">
+                            <p class="text-start line-clamp-2 fs-6 mb-1">${title}</p>
+                            <div class="d-inline-flex gap-2 align-items-center">
+                                <p class="fs-7 fw-semibold">${broadcaster.display_name}</p>
+                                <span class="fs-8 fw-light">${game?.name || 'Jeu inconnu'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <div class="fs-7">
+                        <i class="fa-light fa-eye mr-1"></i> ${views} vues
+                    </div>
+                    <div class="fs-7">
+                        <i class="fa-light fa-calendar mr-1"></i> ${formatClipDate(date)}
+                    </div>
+                </div>
+            </a>
+        </div>
+    `;
+}
+
+// Show clip status message
+function showStatusMessage(container, message, type = 'info') {
+    const icon = type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+    container.html(`
+        <div class="col-12 text-center py-5">
+            <div class="status-message status-${type}">
+                <i class="fa-light ${icon} fa-3x mb-3"></i>
+                <p class="fs-6 text-muted">${message}</p>
+            </div>
+        </div>
+    `);
+}
+
+// Load clips
+function loadClips(container, url, params = {}) {
+    container.html('<div class="col-12 text-center py-3"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Chargement...</span></div></div>');
+
+    const queryParams = new URLSearchParams({
+        page: DEFAULT_PAGE,
+        ...params
+    }).toString();
+
+    $.ajax({
+        url: `${CLIPS_API_BASE}?${queryParams}`,
+        type: 'GET',
+        dataType: 'json',
+        timeout: 10000, // 10 secondes timeout
+        success: function(data) {
+            if (data.items && data.items.length > 0) {
+                container.html('');
+                $.each(data.items, function(c, clip) {
+                    container.append(generateClipHTML(clip));
+                });
+            } else {
+                showStatusMessage(container, 'Aucun clip disponible pour le moment.', 'info');
+            }
+        },
+        error: function(xhr, status, error) {
+            let errorMessage = 'Erreur lors du chargement des clips.';
+
+            if (status === 'timeout') {
+                errorMessage = 'Le serveur met trop de temps à répondre.';
+            } else if (xhr.status === 0) {
+                errorMessage = 'Problème de connexion internet.';
+            } else if (xhr.status === 404) {
+                errorMessage = 'API non disponible.';
+            }
+
+            showStatusMessage(container, errorMessage, 'error');
+            console.error('Erreur API clips:', error);
+        }
+    });
+}
+
+// Clip events
+$(window).on('load', function() {
+    loadClips($(".clip-list-here"), CLIPS_API_BASE, { sort_by: 'view_count' });
+});
+
+$(document).on('click', "#btnradio1", function(event) {
+    loadClips($(".clip-list-here"), CLIPS_API_BASE, { sort_by: 'view_count' });
+});
+
+$(document).on('click', "#btnradio2", function(event) {
+    loadClips($(".clip-list-here"), CLIPS_API_BASE, { sort_by: 'created_at' });
+});
 
 // Streamer personnal clip
-//$(document).on('click', ".btn-streamer#clips", function(event){
-//    $(".streamer-clip-list-here").html("")
-//    
-//    $.getJSON("https://clips.zevent.fr/api/clips?broadcaster=" + $(this).attr("data-id") + "&page=1", function(data){
-//        $("#streamer_name").text(clip.broadcaster.display_name).attr("style", "text-transform: uppercase")
-//        $.each(data.items, function(c, clip){
-//            var clip_link = clip.url;
-//            var thumbnail = clip.thumbnail_url;
-//            var cover = clip.broadcaster.profile_image_url;
-//            var title = clip.title;
-//            var streamer_name = clip.broadcaster.display_name;
-//            var game = clip.game.name;
-//            var views = clip.view_count;
-//            var date = clip.created_at;
-//            var clip_html = `
-//                <div class="col list-clip">
-//                    <a class="card mb-3" href="${clip_link}" target="_blank">
-//                        <div class="p-2">
-//                            <img src="${thumbnail}" class="rounded"  width="100%">
-//                        </div>
-//                        <div class="card-body">
-//                            <div class="d-flex pb-3" style="gap: 1rem !important;">
-//                                <img src="${cover}" class="rounded" style="width: 2.5rem; height: 2.5rem;">
-//                                <div class="text-start">
-//                                    <p class="text-start line-clamp-2 fs-6 mb-1">${title}</p>
-//                                    <div class="d-inline-flex gap-2 align-items-center">
-//                                        <p class="fs-7 fw-semibold">${streamer_name}</p>
-//                                        <span class="fs-8 fw-light">${game}</span>
-//                                    </div>
-//                                </div>
-//                            </div>
-//                        </div>
-//                        <div class="card-footer d-flex justify-content-between">
-//                            <div id="vues" class="fs-7">
-//                                <i class="fa-light fa-eye mr-1"></i> ${views} vues
-//                            </div>
-//                            <div id="date" class="fs-7">
-//                                <i class="fa-light fa-calendar mr-1"></i> ${moment(date).format("DD/MM/YYYY")}
-//                            </div>
-//                        </div>
-//                    </a>
-//                </div>
-//            `
-//            $(".streamer-clip-list-here").append(clip_html)
-//        })
-//    })
-//})
+$(document).on('click', ".btn-streamer#clips", function(event) {
+    const streamerId = $(this).attr("data-id");
+    const container = $(".streamer-clip-list-here");
+    if (!streamerId) {
+        showStatusMessage(container, 'Aucun streamer sélectionné.', 'error');
+        return;
+    }
+
+    loadClips(container, CLIPS_API_BASE, { broadcaster: streamerId });
+});
 
 // Update the countdown until the end of Zevent
 var countdownInterval = setInterval(function() {
     var now = moment();
     var endDate = moment(end_date);
     var duration = moment.duration(endDate.diff(now));
-    
+
     // Si le compte à rebours est terminé
     if (duration.asSeconds() <= 0) {
         clearInterval(countdownInterval);
         $('.countdown').text("ÉVÉNEMENT TERMINÉ");
         return;
     }
-    
+
     // Afficher le compte à rebours
     var days = Math.floor(duration.asDays());
     var hours = duration.hours();
     var minutes = duration.minutes();
     var seconds = duration.seconds();
-    
+
     $('#time-remaining').html(
         days + " jours " + 
         String(hours).padStart(2, '0') + ":" + 
@@ -657,9 +669,21 @@ function loadFilters() {
 
 // Triggers
 $(".tri-state-toggle-button.loc, .tri-state-toggle-button.online").on("click", function () {
-    setTimeout(saveFiltersAndUpdate, 0); // Attendre que la classe active soit bien appliquée
+    setTimeout(saveFiltersAndUpdate, 0);
 });
 
 $("#toggle-favorites").on("click", saveFiltersAndUpdate);
-
 $("#searchBar").on("keyup input", saveFiltersAndUpdate);
+
+// Gestion du aria-hidden sur modal
+$(document).on('show.bs.modal', '.modal', function() {
+    $(this).removeAttr('aria-hidden');
+});
+
+$(document).on('hide.bs.modal', '.modal', function() {
+    $(this).find(':focus').blur();
+});
+
+$(document).on('hidden.bs.modal', '.modal', function() {
+    $(this).attr('aria-hidden', 'true');
+});
