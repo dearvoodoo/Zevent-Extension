@@ -219,10 +219,17 @@ function createStreamer(data){
                     <a type="button" style="margin-right: .5rem;" class="btn btn-success-inverse" target="_blank" href="${data.donationUrl}"><i class="fa-light fa-money-bill-1"></i></a>
                     <a type="button" class="btn btn-success-inverse info-btn" data-fullscreen="${data.twitch_id}" href="#" data-bs-toggle="modal" data-bs-target="#streamerModal"><i class="fa-light fa-circle-info"></i></a>
                 </div>
+                <div class="button-info">
+                    <p>Voir le live</p>
+                    <p>Faire un don</p>
+                    <p>Plus d'info</p>
+                </div>
             </div>
         </div>
     `)
 }
+
+
 
 // Show the info window
 $(document).on('click', ".info-btn", function(event){
@@ -235,9 +242,11 @@ $(document).on('click', ".info-btn", function(event){
                 if (live.online == true) {
                     on_off = '🟢 En Ligne'
                     $(".stream-preview").attr("src", `https://static-cdn.jtvnw.net/previews-ttv/live_user_${live.twitch}.jpg`)
+                    $(".stream-preview-link").attr("href", `https://twitch.tv/${live.display}`)
                 } else {
                     on_off = '🔴 Hors Ligne'
                     $(".stream-preview").attr("src", "assets/images/offline.jpg").addClass("green-border")
+                    $(".stream-preview-link").attr("href", `https://twitch.tv/${live.display}`)
                 }
 
                 if (live.location == "Online") {
@@ -288,6 +297,8 @@ $(document).on('click', ".info-btn", function(event){
                             </li>
                         </ul>
                     `);
+                } else {
+                    $("#actual-goal").html("")
                 }
             }
         })
@@ -374,10 +385,10 @@ $(document).on('click', ".btn-streamer#goals", function(event){
                                 <p>Ce streamer n'a pas de goals configurés dans l'extension.</p>
                                 <p>Vous pouvez en proposer en contactant le développeur :</p>
                                 <ul class="contact-list">
-                                    <li><a href="https://x.com/DearVooDoo" target="_blank"><i class="fab fa-x-twitter"></i> @DearVooDoo</a></li>
-                                    <li><a href="https://bsky.app/profile/the-coven.fr" target="_blank"><i class="fab fa-bluesky"></i> @the-coven.fr</a></li>
-                                    <li><i class="fab fa-discord"></i> @dear_voodoo</li>
-                                    <li><a href="mailto:voodoo@the-coven.fr"><i class="fal fa-enveloppe"></i> voodoo@the-coven.fr</a></li>
+                                    <li><a href="https://x.com/DearVooDoo" target="_blank"><i class="fab fa-x-twitter"></i> @DearVooDoo</li></a>
+                                    <li><a href="https://bsky.app/profile/the-coven.fr" target="_blank"><i class="fab fa-bluesky"></i> @the-coven.fr</li></a>
+                                    <li><a href="https://discord.com/users/175006832002072576" target="_blank"><i class="fab fa-discord"></i> @dear_voodoo</li></a>
+                                    <li><a href="mailto:voodoo@the-coven.fr"><i class="fal fa-enveloppe"></i><i class="fal fa-at"></i>  voodoo@the-coven.fr</li></a>
                                 </ul>
                             </div>
                             <div class="goal-details"></div>
@@ -397,7 +408,10 @@ $(document).on('click', ".zplace-btn", function(event){
         contentType: "application/json",
         data: JSON.stringify({query:`query LastBoardUrl {lastBoardUrl}`}),
         success: function (data) {
-            $(".zplace-img").attr("src", data.data.lastBoardUrl)
+            const $lastBoardUrl = data.data.lastBoardUrl;
+            if ($lastBoardUrl !== null) {
+                $(".zplace-img").attr("src", $lastBoardUrl)
+            }
         }
     })
 })
@@ -563,6 +577,7 @@ var countdownInterval = setInterval(function() {
         String(seconds).padStart(2, '0')
     ).removeClass("placeholder");
 }, 1000);
+
 // Update the global donation every 5 seconds and the viewers
 var intervalId = window.setInterval(function(){
     $.getJSON("https://zevent.fr/api/", function(data){
