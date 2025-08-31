@@ -8,7 +8,7 @@
 }
 
 html {
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 body {
@@ -1200,4 +1200,29 @@ p {margin: 0}
 
 .status-message i {
     opacity: 0.7;
+}
+
+.button-info p {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 10px);
+    left: calc(50% - 5px);
+    transform: translate(-50%, 0); /* juste pour centrer, pas d’anim */
+    text-align: center;
+    background: var(--background);
+    border: 1px solid #02e86959;
+    border-radius: 5px;
+    margin: 5px;
+
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Hover → fade in */
+.user-card:has(.card-menu a:nth-child(1):hover) .button-info p:nth-child(1),
+.user-card:has(.card-menu a:nth-child(2):hover) .button-info p:nth-child(2),
+.user-card:has(.card-menu a:nth-child(3):hover) .button-info p:nth-child(3) {
+    opacity: 1;
+    visibility: visible;
 }
