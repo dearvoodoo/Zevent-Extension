@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paramètres — Extension ZEVENT</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body style="height:560px;overflow:overlay;width:400px">
+
+    <div class="option-card bg-texture">
+        <h1>Paramètres</h1>
+
+        <label class="option-toggle">
+            <input type="checkbox" id="notificationsEnabled">
+            <span class="option-toggle-label">
+                <i class="fa-light fa-bell me-2"></i>Notifications standards
+            </span>
+        </label>
+
+        <label class="option-toggle">
+            <input type="checkbox" id="milestonesEnabled">
+            <span class="option-toggle-label">
+                <i class="fa-light fa-trophy me-2"></i>Notifications de paliers
+            </span>
+        </label>
+
+        <label class="option-toggle">
+            <input type="checkbox" id="customNotificationsEnabled">
+            <span class="option-toggle-label">
+                <i class="fa-light fa-sparkles me-2"></i>Notifications personnalisées
+            </span>
+        </label>
+
+        <button type="button" class="btn btn-success-inverse mt-3" id="saveOptions">
+            <i class="fal fa-save me-2"></i>Sauvegarder
+        </button>
+
+        <div class="save-feedback d-none mt-2" id="save-feedback">
+            <i class="fa-light fa-check-circle me-1"></i> Options sauvegardées !
+        </div>
+    </div>
+
+    <br>
+
+    <div class="option-card bg-texture">
+        <h1>Favoris</h1>
+        <div id="favorites-list">
+            <p class="text-muted" style="font-size:.85rem">Vous n'avez aucun favori.</p>
+        </div>
+    </div>
+
+    <script src="assets/js/options.js"></script>
+</body>
+</html>

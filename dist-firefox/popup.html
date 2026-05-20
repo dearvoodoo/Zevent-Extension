@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            width: 500px;
+            height: 680px;
+            overflow-y: auto;
+            padding: 8px !important;
+            margin: 0;
+        }
+
+        .modal,
+        .modal-dialog {
+            overflow-x: hidden;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+        .modal-backdrop {
+            z-index: 1040;
+        }
+    </style>
+</head>
+
+<body>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+        <defs>
+            <filter id="glass-distortion">
+                <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" />
+                <feGaussianBlur stdDeviation="2" />
+                <feDisplacementMap scale="77" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- HEADER -->
+    <header>
+        <a href="https://zevent.fr" target="_blank"><img src="assets/images/logo.png" alt="ZEVENT" class="logo"></a>
+        <div class="navigation">
+            <nav class="asso">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#clipsModal" class="clips-btn d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 16 16"
+                        class="me-1">
+                        <path d="M0 0h16v16H0z" fill="none" />
+                        <path fill="currentColor"
+                            d="M2 4.5A2.5 2.5 0 0 1 4.5 2a.5.5 0 0 0 0-1A3.5 3.5 0 0 0 1 4.5a.5.5 0 0 0 1 0m4.5 5.68V5.82a.32.32 0 0 1 .487-.272l3.259 1.991a.54.54 0 0 1 0 .922l-3.26 1.992a.32.32 0 0 1-.486-.274M4.5 14A2.5 2.5 0 0 1 2 11.5a.5.5 0 0 0-1 0A3.5 3.5 0 0 0 4.5 15a.5.5 0 0 0 0-1M14 4.5A2.5 2.5 0 0 0 11.5 2a.5.5 0 0 1 0-1A3.5 3.5 0 0 1 15 4.5a.5.5 0 0 1-1 0M11.5 14a2.5 2.5 0 0 0 2.5-2.5a.5.5 0 0 1 1 0a3.5 3.5 0 0 1-3.5 3.5a.5.5 0 0 1 0-1m-6-11A2.5 2.5 0 0 0 3 5.5v5A2.5 2.5 0 0 0 5.5 13h5a2.5 2.5 0 0 0 2.5-2.5v-5A2.5 2.5 0 0 0 10.5 3zM4 5.5A1.5 1.5 0 0 1 5.5 4h5A1.5 1.5 0 0 1 12 5.5v5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 10.5z" />
+                    </svg>
+                    Clips
+                </a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#zplaceModal" class="zplace-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 15 15" class="me-1">
+                        <path d="M0 0h15v15H0z" fill="none" />
+                        <path fill="currentColor"
+                            d="M10 0v2h3v3h2v5h-2v3h-3v2H5v-2H2v-3H0V5h2V2h3V0zM9 2H6v2H4v2H2v3h2v2h2v2h3v-2h2V9h2V6h-2V4H9z" />
+                    </svg>
+                    ZPlace
+                </a>
+            </nav>
+            <nav class="social">
+                <a href="https://boutique.zevent.fr" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M6 4h3s0 3 3 3s3-3 3-3h3m0 7v8.4a.6.6 0 0 1-.6.6H6.6a.6.6 0 0 1-.6-.6V11m12-7l4.443 1.777a.6.6 0 0 1 .334.78l-1.626 4.066a.6.6 0 0 1-.557.377H18M6 4L1.557 5.777a.6.6 0 0 0-.334.78l1.626 4.066a.6.6 0 0 0 .557.377H6" />
+                    </svg>
+                </a>
+                <a href="https://bsky.app/profile/zevent.fr" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"
+                            d="M12 11.496C11.894 11.296 7.455 3 3.504 3c-2.168 0-1.5 5-1 7.5c.203 1.01 1 4 5.499 3.5c0 0-3.999.5-3.999 3c0 1.5 2.5 4 4.499 4c1.958 0 3.436-4.314 3.497-4.494c.06.18 1.54 4.494 3.497 4.494c2 0 4.499-2.5 4.499-4c0-2.5-3.999-3-3.999-3c4.499.5 5.297-2.49 5.499-3.5c.5-2.5 1.168-7.5-1-7.5c-3.95 0-8.39 8.296-8.496 8.496Z" />
+                    </svg>
+                </a>
+                <a href="https://twitter.com/zeventfr" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 16 16">
+                        <path d="M0 0h16v16H0z" fill="none" />
+                        <path fill="currentColor"
+                            d="M9.294 6.928L14.357 1h-1.2L8.762 6.147L5.25 1H1.2l5.31 7.784L1.2 15h1.2l4.642-5.436L10.751 15h4.05zM7.651 8.852l-.538-.775L2.832 1.91h1.843l3.454 4.977l.538.775l4.491 6.47h-1.843z" />
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/zeventfr/" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5">
+                            <path
+                                d="M3 12c0-4.243 0-6.364 1.318-7.682S7.758 3 12 3s6.364 0 7.682 1.318S21 7.758 21 12s0 6.364-1.318 7.682S16.242 21 12 21s-6.364 0-7.682-1.318S3 16.242 3 12" />
+                            <path
+                                d="M16 12a4 4 0 1 1-8 0a4 4 0 0 1 8 0m1.375-5.25h-.125m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0" />
+                        </g>
+                    </svg>
+                </a>
+                <a href="https://www.reddit.com/r/zevent/" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5">
+                            <path
+                                d="M15 17a5 5 0 0 1-6 0m9.5-12.5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m-3 0C14.333 4.667 12 5.8 12 9" />
+                            <path
+                                d="M12 21c4.418 0 8-2.686 8-6c0-.352-.043-.696-.12-1.031a2.498 2.498 0 1 0-2.652-3.508C15.824 9.55 13.997 9 12 9c-2 0-3.826.552-5.229 1.46A2.498 2.498 0 0 0 2 11.5a2.5 2.5 0 0 0 2.12 2.469Q4 14.472 4 15c0 3.314 3.582 6 8 6" />
+                            <path
+                                d="M15.25 13H15m.5 0a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0m-5.75 0H9.5m.5 0a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0" />
+                        </g>
+                    </svg>
+
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MODE PRÉ-LANCEMENT -->
+    <div class="first-card bg-texture prelaunch-card" id="prelaunchContainer" style="display: none;">
+        <a href="https://zevent.fr/concert" target="_blank">
+            <img src="assets/images/banner.png" class="banner" alt="ZEVENT Banner">
+        </a>
+        <div class="text-center mt-3">
+            <p class="subsubtitle">Prochaine édition</p>
+            <p class="money-raised" id="prelaunchEventDate">2026</p>
+            <div id="prelaunchAssociation" class="assos-modern mt-2"></div>
+            <div class="countdown-prelaunch mt-3">
+                <span class="subtitle">Début dans</span>
+                <p class="money-raised" id="prelaunchCountdown">--j --:--:--</p>
+            </div>
+            <button class="btn-modern mt-3" id="showHistoryBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" class="me-2">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path fill="currentColor"
+                        d="M17 14a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2m-4-5a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-6-3a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2" />
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M7 1.75a.75.75 0 0 1 .75.75v.763c.662-.013 1.391-.013 2.193-.013h4.113c.803 0 1.532 0 2.194.013V2.5a.75.75 0 0 1 1.5 0v.827q.39.03.739.076c1.172.158 2.121.49 2.87 1.238c.748.749 1.08 1.698 1.238 2.87c.153 1.14.153 2.595.153 4.433v2.112c0 1.838 0 3.294-.153 4.433c-.158 1.172-.49 2.121-1.238 2.87c-.749.748-1.698 1.08-2.87 1.238c-1.14.153-2.595.153-4.433.153H9.945c-1.838 0-3.294 0-4.433-.153c-1.172-.158-2.121-.49-2.87-1.238c-.748-.749-1.08-1.698-1.238-2.87c-.153-1.14-.153-2.595-.153-4.433v-2.112c0-1.838 0-3.294.153-4.433c.158-1.172.49-2.121 1.238-2.87c.749-.748 1.698-1.08 2.87-1.238q.35-.046.739-.076V2.5A.75.75 0 0 1 7 1.75M5.71 4.89c-1.005.135-1.585.389-2.008.812S3.025 6.705 2.89 7.71q-.034.255-.058.539h18.336q-.024-.284-.058-.54c-.135-1.005-.389-1.585-.812-2.008s-1.003-.677-2.009-.812c-1.027-.138-2.382-.14-4.289-.14h-4c-1.907 0-3.261.002-4.29.14M2.75 12c0-.854 0-1.597.013-2.25h18.474c.013.653.013 1.396.013 2.25v2c0 1.907-.002 3.262-.14 4.29c-.135 1.005-.389 1.585-.812 2.008s-1.003.677-2.009.812c-1.027.138-2.382.14-4.289.14h-4c-1.907 0-3.261-.002-4.29-.14c-1.005-.135-1.585-.389-2.008-.812s-.677-1.003-.812-2.009c-.138-1.027-.14-2.382-.14-4.289z"
+                        clip-rule="evenodd" />
+                </svg>
+                Éditions précédentes
+            </button>
+        </div>
+    </div>
+
+    <!-- MODE OFFLINE -->
+    <div class="first-card bg-solid offline-card" id="offlineContainer" style="display: none;">
+        <div class="text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 12 12"
+                style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;">
+                <path d="M0 0h12v12H0z" fill="none" />
+                <path fill="currentColor"
+                    d="M2 12h7v-1H8v-1H7v1H4v-1H3v1H2Zm-1-1h1v-1H1Zm-1-1h1V4H0Zm2-3h1V6H2Zm1 1h1V7H3Zm1 2h3V9H4Zm0-3h1V6H4ZM1 4h1V3H1Zm8 7h1v-1H9ZM6 7h1V6H6Zm1 1h1V7H7ZM2 3h2V2H2Zm6 4h1V6H8Zm2 3h1V6h-1ZM6 5h2V4H7V2H5v1h1Zm3 0h2V4h-1V1H8v1h1Zm0 0" />
+            </svg>
+            <p class="money-raised" style="font-size: 1.2rem;">Hors période</p>
+            <p class="subsubtitle">L'événement n'est pas programmé actuellement</p>
+            <div id="offlineAssociations" class="assos-modern mt-3"></div>
+            <button class="btn-modern mt-4" id="showHistoryBtnOffline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" class="me-2">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path fill="currentColor"
+                        d="M17 14a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2m-4-5a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-6-3a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2" />
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M7 1.75a.75.75 0 0 1 .75.75v.763c.662-.013 1.391-.013 2.193-.013h4.113c.803 0 1.532 0 2.194.013V2.5a.75.75 0 0 1 1.5 0v.827q.39.03.739.076c1.172.158 2.121.49 2.87 1.238c.748.749 1.08 1.698 1.238 2.87c.153 1.14.153 2.595.153 4.433v2.112c0 1.838 0 3.294-.153 4.433c-.158 1.172-.49 2.121-1.238 2.87c-.749.748-1.698 1.08-2.87 1.238c-1.14.153-2.595.153-4.433.153H9.945c-1.838 0-3.294 0-4.433-.153c-1.172-.158-2.121-.49-2.87-1.238c-.748-.749-1.08-1.698-1.238-2.87c-.153-1.14-.153-2.595-.153-4.433v-2.112c0-1.838 0-3.294.153-4.433c.158-1.172.49-2.121 1.238-2.87c.749-.748 1.698-1.08 2.87-1.238q.35-.046.739-.076V2.5A.75.75 0 0 1 7 1.75M5.71 4.89c-1.005.135-1.585.389-2.008.812S3.025 6.705 2.89 7.71q-.034.255-.058.539h18.336q-.024-.284-.058-.54c-.135-1.005-.389-1.585-.812-2.008s-1.003-.677-2.009-.812c-1.027-.138-2.382-.14-4.289-.14h-4c-1.907 0-3.261.002-4.29.14M2.75 12c0-.854 0-1.597.013-2.25h18.474c.013.653.013 1.396.013 2.25v2c0 1.907-.002 3.262-.14 4.29c-.135 1.005-.389 1.585-.812 2.008s-1.003.677-2.009.812c-1.027.138-2.382.14-4.289.14h-4c-1.907 0-3.261-.002-4.29-.14c-1.005-.135-1.585-.389-2.008-.812s-.677-1.003-.812-2.009c-.138-1.027-.14-2.382-.14-4.289z"
+                        clip-rule="evenodd" />
+                </svg>
+                Éditions précédentes
+            </button>
+        </div>
+    </div>
+
+    <!-- MODE LIVE -->
+    <div class="first-card bg-texture banner-card" style="display: none;">
+        <a href="https://zevent.fr/concert" target="_blank">
+            <img src="assets/images/banner.png" class="banner" alt="ZEVENT Banner">
+        </a>
+        <div class="row mt-3">
+            <div class="col">
+                <p class="subtitle">Cagnotte</p>
+                <p class="money-raised"><span id="donationAmount">0</span>€</p>
+            </div>
+            <div class="col">
+                <p class="subtitle">Viewers</p>
+                <p class="money-raised"><span id="viewersGlobal">0</span></p>
+            </div>
+        </div>
+        <p class="subsubtitle"><span id="event-date-label"></span><br><span id="time-remaining"></span></p>
+        <div id="event-associations" class="assos-modern"></div>
+    </div>
+
+    <!-- SECTION STREAMERS -->
+    <div class="streamers-section" id="streamersSection">
+        <h1 class="title-streamers">Les Streamers (<span id="streamer-count">0</span>)</h1>
+
+        <div class="streamers-selector-container" id="filtersContainer">
+            <div class="tri-state-toggle" style="display: flex;">
+                <button class="tri-state-toggle-button loc" id="toggle-loc-lan">LAN</button>
+                <button class="tri-state-toggle-button loc active" id="toggle-loc-all">Tout</button>
+                <button class="tri-state-toggle-button loc" id="toggle-loc-online">Distance</button>
+            </div>
+            <button id="toggle-favorites" class="filter-button"><svg xmlns="http://www.w3.org/2000/svg" width="1.15em"
+                    height="1.15em" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path fill="currentColor"
+                        d="m12 17.275l-4.15 2.5q-.275.175-.575.15t-.525-.2t-.35-.437t-.05-.588l1.1-4.725L3.775 10.8q-.25-.225-.312-.513t.037-.562t.3-.45t.55-.225l4.85-.425l1.875-4.45q.125-.3.388-.45t.537-.15t.537.15t.388.45l1.875 4.45l4.85.425q.35.05.55.225t.3.45t.038.563t-.313.512l-3.675 3.175l1.1 4.725q.075.325-.05.588t-.35.437t-.525.2t-.575-.15z" />
+                </svg></button>
+            <div class="tri-state-toggle" style="display: flex;">
+                <button class="tri-state-toggle-button online" id="toggle-online-true">Online</button>
+                <button class="tri-state-toggle-button online active" id="toggle-online-all">Tout</button>
+                <button class="tri-state-toggle-button online" id="toggle-online-false">Offline</button>
+            </div>
+        </div>
+
+        <div class="streamers-search-container">
+            <input type="text" id="searchBar" placeholder="Rechercher un streamer..." autocomplete="off">
+        </div>
+
+        <div id="streamers-skeleton" class="streamers-skeleton">
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-text"></div>
+            </div>
+        </div>
+
+        <div id="streamers" style="display: none;"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="clean-footer">
+        <div class="footer-content">
+            <span class="copyright">© 2024-2026 The Coven</span>
+            <span class="separator">•</span>
+            <span class="version">v<span id="app_version"></span></span>
+            <span class="separator">•</span>
+            <button class="footer-settings" id="openOptions"><svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 48 48"><path d="M0 0h48v48H0z" fill="none" /><path fill="currentColor" d="M23 22.922c0-.526.474-.922 1-.922s1 .396 1 .922V41a1 1 0 1 1-2 0zM28 16a4 4 0 0 0-3-3.874V7a1 1 0 1 0-2 0v5.126A4.002 4.002 0 0 0 24 20a4 4 0 0 0 4-4M12 36a4 4 0 0 0 1-7.874V7a1 1 0 1 0-2 0v21.126A4.002 4.002 0 0 0 12 36m24-3c-.526 0-1 .396-1 .922V41a1 1 0 1 0 2 0v-7.078c0-.526-.474-.922-1-.922m1-9.874A4.002 4.002 0 0 1 36 31a4 4 0 0 1-1-7.874V7a1 1 0 1 1 2 0zM11 38.922c0-.526.474-.922 1-.922s1 .396 1 .922V41a1 1 0 1 1-2 0z" /></svg>Préférences</button>
+            <span class="separator">•</span>
+            <button class="footer-settings" id="showChangelogBtn"><svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.223 14A9 9 0 1 0 12 3a9 9 0 0 0-8.294 5.5M7 9H3V5" /></svg>Changelog</button>
+        </div>
+        <div class="footer-meta">Fait avec 
+            <svg style="color: rgb(243, 64, 94)" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="M14.125 19.972c-.222.164-.463.3-.728.37c-.746.2-1.561-.098-2.273-.298c-4.773-1.343-7.97-3.446-8.887-6.584c-.732-2.506-.028-5.016 1.52-6.576c1.434-1.445 3.56-2.031 5.741-1.092c1.42-1.904 3.555-2.46 5.519-1.925c2.12.577 3.984 2.399 4.603 4.935q.182.746.183 1.519q.384.197.72.48c1.157.979 1.775 2.642 1.43 4.371c-.44 2.206-2.485 3.755-5.41 4.861c-.501.19-1.049.425-1.596.329c-.304-.054-.576-.21-.822-.39m-9.968-7.073c-.535-1.833.003-3.581 1.02-4.606c.976-.984 2.423-1.35 4.023-.414c.559.327 1.28.133 1.6-.428c.918-1.611 2.354-2.018 3.691-1.654c1.394.38 2.734 1.624 3.186 3.479q.083.334.11.685a3.7 3.7 0 0 0-1.06.301c-1.074-1.047-2.496-1.253-3.75-.791c-1.422.523-2.572 1.875-2.84 3.618c-.273 1.785.57 3.525 2.139 5.198c-.198-.05-.403-.11-.61-.168c-4.631-1.303-6.9-3.135-7.509-5.22m7.958.493c.16-1.05.839-1.781 1.553-2.045c.66-.242 1.393-.115 1.95.69a1.104 1.104 0 0 0 1.545.273c.8-.567 1.532-.435 2.068.018c.582.492.968 1.412.76 2.453c-.225 1.13-1.368 2.328-4.155 3.381c-.177.067-.353.139-.535.192c-.153-.113-.294-.24-.438-.363c-2.258-1.943-2.923-3.46-2.748-4.6Z" /></g></svg>
+             en France par VooDoo.</div>
+    </footer>
+
+    <br class="">
+
+    <!-- MODAL HISTORIQUE -->
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content bg-solid">
+                <div class="modal-header border-0" style="justify-content: space-between;">
+                    <h5 class="modal-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"
+                            class="me-2">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="currentColor"
+                                d="M17 14a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2m-4-5a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-6-3a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2a1 1 0 0 0 0 2" />
+                            <path fill="currentColor" fill-rule="evenodd"
+                                d="M7 1.75a.75.75 0 0 1 .75.75v.763c.662-.013 1.391-.013 2.193-.013h4.113c.803 0 1.532 0 2.194.013V2.5a.75.75 0 0 1 1.5 0v.827q.39.03.739.076c1.172.158 2.121.49 2.87 1.238c.748.749 1.08 1.698 1.238 2.87c.153 1.14.153 2.595.153 4.433v2.112c0 1.838 0 3.294-.153 4.433c-.158 1.172-.49 2.121-1.238 2.87c-.749.748-1.698 1.08-2.87 1.238c-1.14.153-2.595.153-4.433.153H9.945c-1.838 0-3.294 0-4.433-.153c-1.172-.158-2.121-.49-2.87-1.238c-.748-.749-1.08-1.698-1.238-2.87c-.153-1.14-.153-2.595-.153-4.433v-2.112c0-1.838 0-3.294.153-4.433c.158-1.172.49-2.121 1.238-2.87c.749-.748 1.698-1.08 2.87-1.238q.35-.046.739-.076V2.5A.75.75 0 0 1 7 1.75M5.71 4.89c-1.005.135-1.585.389-2.008.812S3.025 6.705 2.89 7.71q-.034.255-.058.539h18.336q-.024-.284-.058-.54c-.135-1.005-.389-1.585-.812-2.008s-1.003-.677-2.009-.812c-1.027-.138-2.382-.14-4.289-.14h-4c-1.907 0-3.261.002-4.29.14M2.75 12c0-.854 0-1.597.013-2.25h18.474c.013.653.013 1.396.013 2.25v2c0 1.907-.002 3.262-.14 4.29c-.135 1.005-.389 1.585-.812 2.008s-1.003.677-2.009.812c-1.027.138-2.382.14-4.289.14h-4c-1.907 0-3.261-.002-4.29-.14c-1.005-.135-1.585-.389-2.008-.812s-.677-1.003-.812-2.009c-.138-1.027-.14-2.382-.14-4.289z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Éditions précédentes
+                    </h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body" id="historyModalBody" style="margin-top: 60px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CHANGELOG -->
+    <div class="modal fade" id="changelogModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content bg-solid">
+                <div class="modal-header border-0" style="justify-content: space-between;">
+                    <h5 class="modal-title">Changelogs</h5>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body" id="changelogModalBody" style="margin-top: 60px;">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-success"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CLIPS -->
+    <div class="modal fade" id="clipsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-texture">
+                <div class="modal-header border-0" style="justify-content: flex-end;">
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h1 class="text-uppercase mb-3">Les clips</h1>
+                    <div class="btn-group-modern mb-4">
+                        <input type="radio" class="btn-check-modern" name="btnradio" id="btnradio1" checked>
+                        <label class="btn-modern-small" for="btnradio1">
+                            <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 16 16">
+                                <path d="M0 0h16v16H0z" fill="none" />
+                                <path fill="currentColor" d="M9.32 15.653a.81.81 0 0 1-.086-.855c.176-.342.245-.733.2-1.118a2.1 2.1 0 0 0-.267-.779a2 2 0 0 0-.541-.606a3.96 3.96 0 0 1-1.481-2.282c-1.708 2.239-1.053 3.51-.235 4.63a.75.75 0 0 1-.014.901a.87.87 0 0 1-.394.283a.84.84 0 0 1-.478.023c-1.105-.27-2.145-.784-2.85-1.603a4.7 4.7 0 0 1-.906-1.555a4.8 4.8 0 0 1-.263-1.797s-.133-2.463 2.837-4.876c0 0 3.51-2.978 2.292-5.18a.62.62 0 0 1 .112-.653a.56.56 0 0 1 .623-.147l.146.058a7.63 7.63 0 0 1 2.96 3.5c.58 1.413.576 3.06.184 4.527c.325-.292.596-.641.801-1.033l.029-.064c.198-.477.821-.325 1.055-.013c.086.137 2.292 3.343 1.107 6.048a5.5 5.5 0 0 1-1.84 2.027a6.1 6.1 0 0 1-2.138.893a.83.83 0 0 1-.472-.038a.87.87 0 0 1-.381-.29zM7.554 7.892a.42.42 0 0 1 .55.146q.06.09.075.198l.045.349c.02.511.014 1.045.213 1.536c.206.504.526.95.932 1.298a3.06 3.06 0 0 1 1.16 1.422c.22.564.25 1.19.084 1.773a4.1 4.1 0 0 0 1.39-.757l.103-.084c.336-.277.613-.623.813-1.017c.201-.393.322-.825.354-1.269c.065-1.025-.284-2.054-.827-2.972c-.248.36-.59.639-.985.804c-.247.105-.509.17-.776.19a.8.8 0 0 1-.439-.1a.83.83 0 0 1-.321-.328a.83.83 0 0 1-.035-.729c.412-.972.54-2.05.365-3.097a5.87 5.87 0 0 0-1.642-3.16c-.156 2.205-2.417 4.258-2.881 4.7a4 4 0 0 1-.224.194c-2.426 1.965-2.26 3.755-2.26 3.834a3.7 3.7 0 0 0 .459 2.043c.365.645.89 1.177 1.52 1.54C4.5 12.808 4.5 10.89 7.183 8.14l.372-.25z" />
+                            </svg>
+                            Top
+                        </label>
+                        <input type="radio" class="btn-check-modern" name="btnradio" id="btnradio2">
+                        <label class="btn-modern-small" for="btnradio2">
+                            <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em" viewBox="0 0 20 20">
+                                <path d="M0 0h20v20H0z" fill="none" />
+                                <path fill="currentColor" d="m18.69 12.344l-1.727-1.538c-.5-.445-.5-1.174 0-1.619l1.727-1.539c.5-.445.367-.859-.296-.924l-2.29-.217c-.662-.062-1.02-.633-.791-1.266l1.215-3.383c.228-.635-.051-.865-.619-.514l-2.701 1.67a1.16 1.16 0 0 1-1.631-.426L10.599.842C10.27.254 9.727.252 9.392.834l-.909 1.58c-.337.585-1.108.833-1.713.556l-1.6-.734c-.608-.28-1.073.042-1.037.716l.086 1.615c.037.674-.461 1.367-1.104 1.541l-1.545.414c-.642.174-.76.68-.26 1.125l1.727 1.539c.5.445.5 1.174 0 1.619L1.31 12.344c-.5.445-.368.877.293.957l2.095.254c.661.08 1.029.67.818 1.311l-1.074 3.258c-.211.641.09.889.668.555l2.463-1.426a1.32 1.32 0 0 1 1.729.408L9.324 19.2c.372.559.931.529 1.24-.068l.899-1.733a1.243 1.243 0 0 1 1.648-.543l1.734.867c.598.297 1.057-.01 1.021-.682l-.087-1.617c-.035-.674.461-1.365 1.106-1.539l1.543-.416c.644-.174.762-.68.262-1.125M11 14H9v-2h2zm0-3H9V6h2z" />
+                            </svg>
+                            Récent
+                        </label>
+                    </div>
+                    <div class="row row-cols-2 clip-list-here"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ZPLACE -->
+    <div class="modal fade" id="zplaceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-texture">
+                <div class="modal-header border-0" style="justify-content: flex-end;">
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h1 class="text-uppercase mb-2">ZPlace</h1>
+
+                    <div class="zplace-current-card">
+                        <div class="zplace-current-header">
+                            <h3 class="zplace-year">ZPlace actuel</h3>
+                            <button class="btn-download-circle" id="downloadCurrentBtn" title="Télécharger"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="m12 15.577l-3.539-3.538l.708-.72L11.5 13.65V5h1v8.65l2.33-2.33l.709.719zM6.616 19q-.691 0-1.153-.462T5 17.384v-2.423h1v2.423q0 .231.192.424t.423.192h10.77q.23 0 .423-.192t.192-.424v-2.423h1v2.423q0 .691-.462 1.153T17.384 19z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="https://zevent.fr/zplace" target="_blank" class="zplace-current-link">
+                            <img class="zplace-current-img" id="zplaceCurrent" src="/assets/images/zplace-offline.jpg"
+                                alt="ZPlace actuel">
+                        </a>
+                    </div>
+
+                    <div class="zplace-archives">
+                        <h3 class="zplace-year">Archives</h3>
+                        <div class="zplace-archive-buttons">
+                            <button class="btn-modern-download" id="download2025Btn"><svg class="me-2"
+                                    xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="m12 15.577l-3.539-3.538l.708-.72L11.5 13.65V5h1v8.65l2.33-2.33l.709.719zM6.616 19q-.691 0-1.153-.462T5 17.384v-2.423h1v2.423q0 .231.192.424t.423.192h10.77q.23 0 .423-.192t.192-.424v-2.423h1v2.423q0 .691-.462 1.153T17.384 19z" />
+                                </svg>
+                                ZPlace 2025</button>
+                            <button class="btn-modern-download" id="download2024Btn"><svg class="me-2"
+                                    xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="m12 15.577l-3.539-3.538l.708-.72L11.5 13.65V5h1v8.65l2.33-2.33l.709.719zM6.616 19q-.691 0-1.153-.462T5 17.384v-2.423h1v2.423q0 .231.192.424t.423.192h10.77q.23 0 .423-.192t.192-.424v-2.423h1v2.423q0 .691-.462 1.153T17.384 19z" />
+                                </svg>
+                                </i>ZPlace 2024</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL STREAMER (fullscreen) -->
+    <div class="modal fade" id="streamerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-texture">
+                <div class="modal-header border-0" style="justify-content: flex-end;">
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="streamer-modal-content" style="margin-top: 0px;">
+                        <h1 id="streamer-name"></h1>
+                        <p id="view-money" class="mt-2"></p>
+                        <p id="status" class="mb-2"></p>
+                        <a href="#" target="_blank" class="stream-preview-link">
+                            <img src="assets/images/offline.jpg" class="stream-preview"
+                                style="max-width:100%; border-radius:12px; border: 1px solid #02e869;">
+                        </a>
+                        <div class="streamers-btns mt-2">
+                            <a href="#" target="_blank" class="btn-modern" id="tip">
+                                <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 32 32">
+                                    <path d="M0 0h32v32H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="M2 7v17h28V7zm4 2h20a2 2 0 0 0 2 2v9a2 2 0 0 0-2 2H6a2 2 0 0 0-2-2v-9a2 2 0 0 0 2-2m9 2c0 1.439-.561 2-2 2v2c.776 0 1.437-.151 2-.412V20h2v-9zm-6.5 3a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 8.5 14m15 0a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 23.5 14" />
+                                </svg>
+                                Faire un don
+                            </a>
+                            <!--<a href="#" class="btn-modern" id="clips" data-bs-toggle="modal"
+                                data-bs-target="#clipsModal">
+                                <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 16 16">
+                                    <path d="M0 0h16v16H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="M2 4.5A2.5 2.5 0 0 1 4.5 2a.5.5 0 0 0 0-1A3.5 3.5 0 0 0 1 4.5a.5.5 0 0 0 1 0m4.5 5.68V5.82a.32.32 0 0 1 .487-.272l3.259 1.991a.54.54 0 0 1 0 .922l-3.26 1.992a.32.32 0 0 1-.486-.274M4.5 14A2.5 2.5 0 0 1 2 11.5a.5.5 0 0 0-1 0A3.5 3.5 0 0 0 4.5 15a.5.5 0 0 0 0-1M14 4.5A2.5 2.5 0 0 0 11.5 2a.5.5 0 0 1 0-1A3.5 3.5 0 0 1 15 4.5a.5.5 0 0 1-1 0M11.5 14a2.5 2.5 0 0 0 2.5-2.5a.5.5 0 0 1 1 0a3.5 3.5 0 0 1-3.5 3.5a.5.5 0 0 1 0-1m-6-11A2.5 2.5 0 0 0 3 5.5v5A2.5 2.5 0 0 0 5.5 13h5a2.5 2.5 0 0 0 2.5-2.5v-5A2.5 2.5 0 0 0 10.5 3zM4 5.5A1.5 1.5 0 0 1 5.5 4h5A1.5 1.5 0 0 1 12 5.5v5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 10.5z" />
+                                </svg>
+                                Voir les clips
+                            </a>-->
+                            <a href="#" class="btn-modern" id="goals" data-bs-toggle="modal"
+                                data-bs-target="#goalModal">
+                                <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="1.35em" height="1.35em"
+                                    viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path fill="currentColor"
+                                        d="M20.172 6.75h-1.861l-4.566 4.564a1.874 1.874 0 1 1-1.06-1.06l4.565-4.565V3.828a.94.94 0 0 1 .275-.664l1.73-1.73a.25.25 0 0 1 .25-.063c.089.026.155.1.173.191l.46 2.301l2.3.46c.09.018.164.084.19.173a.25.25 0 0 1-.062.249l-1.731 1.73a.94.94 0 0 1-.663.275" />
+                                    <path fill="currentColor"
+                                        d="M2.625 12A9.375 9.375 0 0 0 12 21.375A9.375 9.375 0 0 0 21.375 12c0-.898-.126-1.766-.361-2.587A.75.75 0 0 1 22.455 9c.274.954.42 1.96.42 3c0 6.006-4.869 10.875-10.875 10.875S1.125 18.006 1.125 12S5.994 1.125 12 1.125c1.015-.001 2.024.14 3 .419a.75.75 0 1 1-.413 1.442A9.4 9.4 0 0 0 12 2.625A9.375 9.375 0 0 0 2.625 12" />
+                                    <path fill="currentColor"
+                                        d="M7.125 12a4.874 4.874 0 1 0 9.717-.569a.748.748 0 0 1 1.047-.798c.251.112.42.351.442.625a6.373 6.373 0 0 1-10.836 5.253a6.376 6.376 0 0 1 5.236-10.844a.75.75 0 1 1-.17 1.49A4.876 4.876 0 0 0 7.125 12" />
+                                </svg>
+                                Voir les goals
+                            </a>
+                        </div>
+                        <div id="actual-goal" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GOALS (fullscreen) -->
+    <div class="modal fade" id="goalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-texture">
+                <div class="modal-header border-0" style="justify-content: space-between;">
+                    <button type="button" class="btn-back-modern" data-bs-toggle="modal"
+                        data-bs-target="#streamerModal"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                            viewBox="0 0 1024 1024">
+                            <path d="M0 0h1024v1024H0z" fill="none" />
+                            <path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64" />
+                            <path fill="currentColor"
+                                d="m237.2 512l265.5 265.3a32 32 0 0 1-45.4 45.4l-288-288a32 32 0 0 1 0-45.4l288-288a32 32 0 1 1 45.4 45.4z" />
+                        </svg></button>
+                    <button type="button" class="btn-close-modern" data-bs-dismiss="modal"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6.758 17.243L12.001 12m5.243-5.243L12 12m0 0L6.758 6.757M12.001 12l5.243 5.243" />
+                        </svg></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="goals-modal-content">
+                        <h1 class="mb-3">GOALS</h1>
+                        <div class="goal-stats-card d-inline-flex mx-auto mb-4">
+                            <span class="goal-stats-label">CAGNOTTE</span>
+                            <h3 id="donation_perso" class="goal-stats-value">0€</h3>
+                        </div>
+                        <div class="goals-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/jquery.numscroll.min.js"></script>
+    <script src="assets/js/moment.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/browser-polyfill.min.js"></script>
+    <script src="assets/js/popup.js"></script>
+</body>
+
+</html>
